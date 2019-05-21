@@ -6,13 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'first-app';
+  
 
   constructor(){
   	
   }
 
-  onChangeTitleClick(){
-  	this.title = 'My New App';
-  }
+ 
 }

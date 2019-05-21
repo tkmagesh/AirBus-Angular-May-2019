@@ -1,0 +1,6 @@
+ <label>Title : </label>
+  <input type="text" #txtTitle/>
+  <input type="button" value="Change Title" (click)="onChangeTitleClick(txtTitle.value)"/>
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
