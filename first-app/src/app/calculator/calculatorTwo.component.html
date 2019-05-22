@@ -1,0 +1,12 @@
+<h1>Calculator-2</h1>
+<hr>
+<input type="number" (change)="model.v1 = $event.target.valueAsNumber">
+<select #selectedOperation>
+	<option value="add">Add</option>
+	<option value="subtract">Subtract</option>
+	<option value="multiply">Multiply</option>
+	<option value="divide">Divide</option>
+</select>
+<input type="number" (change)="model.v2 = $event.target.valueAsNumber">
+<input type="button" value="Calculate" (click)="model[selectedOperation.value]()">
+<div>{{model.result}}</div>
