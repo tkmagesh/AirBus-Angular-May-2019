@@ -9,4 +9,4 @@
 </select>
 <input type="number" (change)="model.v2 = $event.target.valueAsNumber">
 <input type="button" value="Calculate" (click)="model[selectedOperation.value]()">
-<div>{{model.result}}</div>
+<app-calculator-result [value]="model.result"></app-calculator-result>
