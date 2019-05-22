@@ -1,1 +1,3 @@
-<div [ngClass]="{positive : value >= 0, negative : value < 0}">{{value}}</div>
+<div [ngClass]="{positive : value >= 0, negative : value < 0}">
+	{{value | currency:'INR'}}
+</div>
