@@ -8,6 +8,3 @@ import { CalculatorModel } from './CalculatorModel';
 export class CalculatorOneComponent{
 	model : CalculatorModel = new CalculatorModel();	
 }
-
-
-
