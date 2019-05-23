@@ -9,8 +9,14 @@ import { BugOperationsService } from './services/bugOperations.service';
 export class BugTrackerComponent{
 	bugs : Bug[] = [];
 
-	constructor(public bugOperations : BugOperationsService){
+	bugSortAttrName : string = 'name';
+	bugSortDesc : boolean = false;
 
+	constructor(public bugOperations : BugOperationsService){
+		this.bugs.push(this.bugOperations.createNew('Server communication failure'));
+		this.bugs.push(this.bugOperations.createNew('User actions not recognized'));
+		this.bugs.push(this.bugOperations.createNew('Internal server error'));
+		this.bugs.push(this.bugOperations.createNew('Application not responding'));
 	}
 
 	onAddNewClick(bugName : string){
