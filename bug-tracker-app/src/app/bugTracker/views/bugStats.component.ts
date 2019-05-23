@@ -4,7 +4,6 @@ import { Bug } from '../models/Bug';
 @Component({
 	selector : 'bug-stats',
 	template : `
-		   <h3>{{getDate()}}</h3>
 		   <section class="stats">
 		   	<span class="closed">{{bugs | closedCount}}</span>
 		   	<span> / </span>
@@ -15,9 +14,5 @@ import { Bug } from '../models/Bug';
 })
 export class BugStatsComponent{
 	@Input('data')
-	bugs : Bug[] = []
-
-	getDate(){
-		return Date();
-	}
+	bugs : Bug[] = [];
 }
