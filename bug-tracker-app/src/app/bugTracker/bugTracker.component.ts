@@ -12,6 +12,8 @@ export class BugTrackerComponent{
 	bugSortAttrName : string = 'name';
 	bugSortDesc : boolean = false;
 
+	newBugName : string = '';
+
 	constructor(public bugOperations : BugOperationsService){
 		this.bugs.push(this.bugOperations.createNew('Server communication failure'));
 		this.bugs.push(this.bugOperations.createNew('User actions not recognized'));
@@ -19,9 +21,9 @@ export class BugTrackerComponent{
 		this.bugs.push(this.bugOperations.createNew('Application not responding'));
 	}
 
-	onAddNewClick(bugName : string){
-		let newBug : Bug = this.bugOperations.createNew(bugName);
-		this.bugs.push(newBug);
+	onAddNewClick(){
+		let newBug : Bug = this.bugOperations.createNew(this.newBugName);
+		this.bugs = [...this.bugs, newBug];
 	}
 
 	onBugNameClick(bug : Bug){
