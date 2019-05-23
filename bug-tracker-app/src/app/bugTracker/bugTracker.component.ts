@@ -12,8 +12,6 @@ export class BugTrackerComponent{
 	bugSortAttrName : string = 'name';
 	bugSortDesc : boolean = false;
 
-	
-
 	constructor(public bugOperations : BugOperationsService){
 		this.bugs.push(this.bugOperations.createNew('Server communication failure'));
 		this.bugs.push(this.bugOperations.createNew('User actions not recognized'));
