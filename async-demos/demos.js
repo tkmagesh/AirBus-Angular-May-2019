@@ -15,21 +15,71 @@
 
 	window['addSyncClient'] = addSyncClient;
 
-	function addAsync(x,y){
+	function addAsync(x,y, callback){
 		console.log(`	[@service] processing ${x} and ${y}`);
 		setTimeout(function(){
 			var result = x + y;
 			console.log(`	[@service] returning result`);
-			return result;
+			callback(result);
 		}, 5000);
 	}
 
 	function addAsyncClient(x,y){
 		console.log(`[@client] triggering service`);
-		var result = addAsync(x,y);
-		console.log(`[@client] result = ${result}`);
+		addAsync(x,y, function(result){
+			console.log(`[@client] result = ${result}`);
+		});
 	}
 
 	window['addAsyncClient'] = addAsyncClient;
 
+	var addAsyncEvents = (function(){
+
+		var _subscribers = [];
+
+		function process(x,y){
+			console.log(`	[@service] processing ${x} and ${y}`);
+			setTimeout(function(){
+				var result = x + y;
+				console.log(`	[@service] returning result`);
+				_subscribers.forEach(callback => callback(result));
+			}, 5000);
+		}
+
+		function subscribe(callback){
+			_subscribers.push(callback);
+		}
+
+		return { 
+			process : process, 
+			subscribe : subscribe
+		};
+
+	})();
+
+	window['addAsyncEvents'] = addAsyncEvents;
+
+	function addAsyncPromise(x,y){
+		var p = new Promise(function(resolveFn, rejectFn){
+
+			console.log(`	[@service] processing ${x} and ${y}`);
+			setTimeout(function(){
+				var result = x + y;
+				console.log(`	[@service] returning result`);
+				resolveFn(result);
+			}, 5000);
+		});
+		return p;
+	}
+
+	window['addAsyncPromise'] = addAsyncPromise;
+
 })();
+
+//promise - client code
+/*
+var p = addAsyncPromise(10,20);
+p.then(function(result){
+	console.log(`[@client] result = ${result}`);
+});
+*/
