@@ -72,7 +72,25 @@
 		return p;
 	}
 
-	window['addAsyncPromise'] = addAsyncPromise;
+	//window['addAsyncPromise'] = addAsyncPromise;
+
+	/*
+	function addAsyncPromiseClient(x,y){
+		console.log(`[@client] trigging operation`);
+		var p = addAsyncPromise(x,y);
+		p.then(function(result){
+			console.log(`[@client] result = ${result}`);
+		});
+	}
+	*/
+
+	async function addAsyncPromiseClient(x,y){
+		console.log(`[@client] trigging operation`);
+		var result = await addAsyncPromise(x,y);
+		console.log(`[@client] result = ${result}`);
+	}
+
+	window['addAsyncPromiseClient'] = addAsyncPromiseClient;
 
 })();
 
