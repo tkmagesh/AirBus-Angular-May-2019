@@ -33,14 +33,19 @@ export class BugTrackerComponent implements OnInit{
 	}
 
 	onRemoveClosedClick(){
-		this.bugs
+		var deletePromises = this.bugs
 			.filter(bug => bug.isClosed)
-			.forEach(async closedBug => {
-				await this.bugOperations.remove(closedBug);
+			.map( closedBug => {
+				return this.bugOperations.remove(closedBug);
 			});
-		this.bugOperations
-			.getAll()
-			.then(bugs => this.bugs = bugs);
+
+		Promise.all(deletePromises)
+			.then( () => {
+				this.bugOperations
+					.getAll()
+					.then(bugs => this.bugs = bugs);		
+			});
+		
 		
 	}
 
