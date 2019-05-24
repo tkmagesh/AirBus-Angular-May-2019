@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Bug } from './models/Bug';
 import { BugOperationsService } from './services/bugOperations.service';
-import axios from 'axios';
-
-console.log(axios);
+import { forkJoin } from "rxjs";
 
 @Component({
 	selector : 'bug-tracker',
@@ -20,6 +18,10 @@ export class BugTrackerComponent implements OnInit{
 	}
 
 	ngOnInit(){
+		this.loadBugs();
+	}
+
+	loadBugs(){
 		this.bugOperations
 			.getAll()
 			.subscribe(bugs => this.bugs = bugs);
@@ -36,18 +38,14 @@ export class BugTrackerComponent implements OnInit{
 	}
 
 	onRemoveClosedClick(){
-		/*var deletePromises = this.bugs
+		var deleteObservables = this.bugs
 			.filter(bug => bug.isClosed)
 			.map( closedBug => {
 				return this.bugOperations.remove(closedBug);
 			});
 
-		Promise.all(deletePromises)
-			.then( () => {
-				this.bugOperations
-					.getAll()
-					.then(bugs => this.bugs = bugs);		
-			});*/
+		forkJoin(...deleteObservables)
+			.subscribe( () => this.loadBugs());
 		
 		
 	}
