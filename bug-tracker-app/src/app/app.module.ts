@@ -15,6 +15,8 @@ import { ClosedCountPipe } from './bugTracker/pipes/closedCount.pipe';
 import { BugStatsComponent } from './bugTracker/views/bugStats.component';
 import { BugEditComponent } from './bugTracker/views/bugEdit.component';
 
+import { TestDirective } from './bugTracker/directives/test.directive';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -22,6 +24,7 @@ import { BugEditComponent } from './bugTracker/views/bugEdit.component';
     , BugStatsComponent
     , BugEditComponent
     , ClosedCountPipe
+    , TestDirective
   ],
   imports: [
     BrowserModule,

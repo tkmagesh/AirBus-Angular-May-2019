@@ -12,7 +12,8 @@ export class SocketService {
     private socket;
 
     public initSocket(): void {
-        this.socket = socketIo(SERVER_URL);
+        if (!this.socket)
+            this.socket = socketIo(SERVER_URL);
     }
 
     public send(message: string): void {

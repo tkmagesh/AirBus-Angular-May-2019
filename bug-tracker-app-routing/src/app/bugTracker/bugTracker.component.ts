@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Bug } from './models/Bug';
 import { BugOperationsService } from './services/bugOperations.services';
+import { SocketService } from '../utils/services/socket.service';
 
 @Component({
 	selector : 'app-bug-tracker',
@@ -46,7 +47,7 @@ export class BugTrackerComponent implements OnInit{
 
 	message: string = '';
 
-	constructor(private bugOperations : BugOperationsService){
+	constructor(private bugOperations : BugOperationsService, private socketService : SocketService){
 		
 		
 			
@@ -54,6 +55,16 @@ export class BugTrackerComponent implements OnInit{
 
 	ngOnInit(){
 
+		
+		this.loadBugs();
+		this.socketService.onMessage()
+	      .subscribe((message: string) => {
+	      	console.log('loading bugs');
+	       	this.loadBugs();
+	      });
+	}
+
+	loadBugs(){
 		this.bugOperations
 			.getAll()
 			.subscribe(bugs => this.bugs = bugs);
@@ -67,7 +78,9 @@ export class BugTrackerComponent implements OnInit{
 	onBugNameClick(bugToToggle){
 		this.bugOperations
 			.toggle(bugToToggle)
-			.subscribe(toggledBug => this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug));
+			.subscribe(toggledBug => () => {
+				this.socketService.send('An existing bug is modified @ ' + Date());
+			});
 		
 	}
 

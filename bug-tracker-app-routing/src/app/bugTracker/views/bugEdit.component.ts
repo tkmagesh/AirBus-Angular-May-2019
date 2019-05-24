@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter} from '@angular/core';
 import { BugOperationsService } from '../services/bugOperations.services';
 import { Bug } from '../models/Bug';
 import { Router } from '@angular/router';
+import { SocketService } from '../../utils/services/socket.service';
 
 @Component({
 	selector : 'app-bug-edit',
@@ -21,7 +22,7 @@ export class BugEditComponent{
 	newBugCreated : EventEmitter<Bug> = new EventEmitter<Bug>();
 
 	constructor(private bugOperations : BugOperationsService,
-		private router : Router){
+		private router : Router, private socketService : SocketService){
 
 	}
 	/*onAddNewClick(){
@@ -38,7 +39,8 @@ export class BugEditComponent{
 		this.bugOperations
 			.createNew(this.newBugName)
 			.subscribe(newBug => {
-				this.router.navigate(['bugs']);		
+				this.socketService.send('A new bug is crearted');
+				this.router.navigate(['bugs']);	
 			});
 	}
 

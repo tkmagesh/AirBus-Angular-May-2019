@@ -20,18 +20,18 @@ export class BugOperationsService{
 			createdAt : new Date(),
 			desc : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur aliquam id pariatur ipsa expedita nesciunt doloribus facilis architecto quisquam totam veniam odio, minima, labore deleniti, neque nam quia amet eveniet.'
 		};
-		this.socketService.send('A new bug is crearted');
 		return this.bugServer.save(newBug);
 	}
 	toggle(bugToToggle : Bug) : Observable<Bug> {
 		let toggledBug = { ...bugToToggle, isClosed : !bugToToggle.isClosed};
-		this.socketService.send('An existing bug is modified @ ' + Date());
 		return this.bugServer.save(toggledBug);
 	}
 	remove(bug : Bug){
 		this.bugServer
 			.remove(bug)
-			.subscribe(() => {});
-		this.socketService.send('Zero or more closed bugs are removed @' + Date());
+			.subscribe(() => {
+				this.socketService.send('Zero or more closed bugs are removed @' + Date());
+			});
+		
 	}
 }
