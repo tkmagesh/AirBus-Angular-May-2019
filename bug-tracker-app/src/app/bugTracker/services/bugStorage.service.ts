@@ -1,27 +1,33 @@
 import { Bug } from '../models/Bug';
 import * as uuid from 'uuid/v4';
+import axios from 'axios';
 
 export class BugStorageService{
 	private storage = window.localStorage;
+	private serviceEndPoint = 'http://localhost:3000/bugs';
 
-	save(bugData : Bug) : Bug {
-		let newBug = {...bugData, id : bugData.id || uuid() };
-		this.storage.setItem(newBug.id.toString(), JSON.stringify(newBug));
-		return newBug;
-	}
-
-	getAll() : Bug[] {
-		let result : Bug[] = [];
-		for(let index = 0, count = this.storage.length; index < count; index++){
-			let key = this.storage.key(index),
-				rawData = this.storage.getItem(key),
-				bug = JSON.parse(rawData);
-			result.push(bug);
+	save(bugData : Bug) : Promise<Bug> {
+		if (!bugData.id){
+			return axios
+				.post(this.serviceEndPoint, bugData)
+				.then(response => response.data)
+		} else {
+			return axios
+				.put(`${this.serviceEndPoint}/${bugData.id}`, bugData)
+				.then(response => response.data)
 		}
-		return result;
+		
 	}
 
-	remove(bug : Bug) : void {
-		this.storage.removeItem(bug.id);
+	getAll() : Promise<Bug[]> {
+		return axios
+			.get(this.serviceEndPoint)
+			.then(response => response.data)
+	}
+
+	remove(bug : Bug) : Promise<any> {
+		return axios
+			.delete(`${this.serviceEndPoint}/${bug.id}`)
+			.then(response => response.data)
 	}
 }

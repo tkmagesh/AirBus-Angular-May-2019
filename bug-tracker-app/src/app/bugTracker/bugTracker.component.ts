@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Bug } from './models/Bug';
 import { BugOperationsService } from './services/bugOperations.service';
+import axios from 'axios';
+
+console.log(axios);
 
 @Component({
 	selector : 'bug-tracker',
@@ -16,27 +19,28 @@ export class BugTrackerComponent implements OnInit{
 		
 	}
 
-	ngOnInit(){
-		this.bugs = this.bugOperations.getAll();
+	async ngOnInit(){
+		this.bugs = await this.bugOperations.getAll()
 	}
 
 	onNewBugCreated(bug: Bug){
 		this.bugs = [...this.bugs, bug];
 	}
 
-	onBugNameClick(bugToToggle : Bug){
-		let toggledBug = this.bugOperations.toggle(bugToToggle);
+	async onBugNameClick(bugToToggle : Bug){
+		let toggledBug = await this.bugOperations.toggle(bugToToggle);
 		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
 	}
 
 	onRemoveClosedClick(){
 		this.bugs
 			.filter(bug => bug.isClosed)
-			.forEach(closedBug => {
-				this.bugOperations.remove(closedBug);
-				//this.bugs = this.bugs.filter(bug => bug.id !== closedBug.id);
+			.forEach(async closedBug => {
+				await this.bugOperations.remove(closedBug);
 			});
-		this.bugs = this.bugOperations.getAll();
+		this.bugOperations
+			.getAll()
+			.then(bugs => this.bugs = bugs);
 		
 	}
 
