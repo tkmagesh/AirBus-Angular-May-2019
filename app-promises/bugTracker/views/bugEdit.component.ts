@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { BugOperationsService } from '../services/bugOperations.service';
 import { Bug } from '../models/Bug';
-import { Observable } from 'rxjs';
 
 @Component({
 	selector : 'bug-edit',
@@ -25,9 +24,7 @@ export class BugEditComponent{
 	}
 
 	async onAddNewClick(){
-		this.bugOperations
-			.createNew(this.newBugName)
-			.subscribe(newBug => this.bugCreate.emit(newBug));
-		
+		let newBug : Bug = await this.bugOperations.createNew(this.newBugName);
+		this.bugCreate.emit(newBug);
 	}
 }

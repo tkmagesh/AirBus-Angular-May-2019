@@ -1,33 +1,36 @@
+import { Injectable } from '@angular/core';
 import { Bug } from '../models/Bug';
 import * as uuid from 'uuid/v4';
-import axios from 'axios';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
+@Injectable()
 export class BugStorageService{
 	private storage = window.localStorage;
 	private serviceEndPoint = 'http://localhost:3000/bugs';
 
-	save(bugData : Bug) : Promise<Bug> {
+	constructor(private http : HttpClient){
+
+	}
+
+	save(bugData : Bug) : Observable<Bug> {
 		if (!bugData.id){
-			return axios
-				.post(this.serviceEndPoint, bugData)
-				.then(response => response.data)
+			return this.http
+				.post<Bug>(this.serviceEndPoint, bugData);
 		} else {
-			return axios
-				.put(`${this.serviceEndPoint}/${bugData.id}`, bugData)
-				.then(response => response.data)
+			return this.http
+				.put<Bug>(`${this.serviceEndPoint}/${bugData.id}`, bugData);
 		}
 		
 	}
 
-	getAll() : Promise<Bug[]> {
-		return axios
-			.get(this.serviceEndPoint)
-			.then(response => response.data)
+	getAll() : Observable<Bug[]> {
+		return this.http
+			.get<Bug[]>(this.serviceEndPoint)
 	}
 
-	remove(bug : Bug) : Promise<any> {
-		return axios
-			.delete(`${this.serviceEndPoint}/${bug.id}`)
-			.then(response => response.data)
+	remove(bug : Bug) : Observable<any> {
+		return this.http
+			.delete<any>(`${this.serviceEndPoint}/${bug.id}`);
 	}
 }
